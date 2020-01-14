@@ -1,58 +1,60 @@
 package org.kondiolka.Controller;
 
 import org.kondiolka.Modules.Subject;
+import org.kondiolka.Repositories.SubjectRepository;
 import org.kondiolka.SubjectMockedData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 public class SubjectController {
-    SubjectMockedData subjectMockedData = SubjectMockedData.getInstance();
+    @Autowired
+    SubjectRepository subjectRepository;
 
     @GetMapping("/subject")
-    public ArrayList<Subject> index(){
-        return subjectMockedData.fetchSubjects();
+    public List<Subject> index(){
+        return subjectRepository.findAll();
     }
 
     @GetMapping("/subject/{id}")
     public Subject show(@PathVariable String id){
-        return subjectMockedData.getSubjectByID(Integer.parseInt(id));
+        return subjectRepository.findById(Integer.parseInt(id)).get();
     }
 
     @PostMapping("/subject/search")
-    public ArrayList<Subject> search(@RequestBody Map<String, String> body){
-        return subjectMockedData.searchSubjects(body.get("text"));
+    public List<Subject> search(@RequestBody Map<String, String> body){
+        return subjectRepository.findByTitleContainingOrDescriptionContaining(body.get("text"), body.get("text"));
     }
 
     @PostMapping("/subject")
     public Subject create(@RequestBody Map<String, String> body){
-        return subjectMockedData.createSubject(
-                Integer.parseInt(body.get("id")),
+        return subjectRepository.save(new Subject(
                 Integer.parseInt(body.get("credits")),
                 body.get("title"),
                 body.get("abbreviation"),
                 body.get("description"),
                 body.get("language"),
                 body.get("faculty")
-        );
+        ));
     }
 
     @PutMapping("/subject/{id}")
     public Subject update(@PathVariable String id, @RequestBody Map<String, String> body){
-        return subjectMockedData.updateSubject(
-                Integer.parseInt(id),
-                Integer.parseInt(body.get("credits")),
-                body.get("title"),
-                body.get("abbreviation"),
-                body.get("description"),
-                body.get("language"),
-                body.get("faculty")
-        );
+        Subject updatedSubject = subjectRepository.findById(Integer.parseInt(id)).get();
+        updatedSubject.setCredits(Integer.parseInt(body.get("credits")));
+        updatedSubject.setTitle(body.get("title"));
+        updatedSubject.setDescription(body.get("description"));
+        updatedSubject.setAbbreviation(body.get("abbreviation"));
+        updatedSubject.setLanguage(body.get("language"));
+        updatedSubject.setFaculty(body.get("faculty"));
+        return subjectRepository.save(updatedSubject);
     }
 
     @DeleteMapping("subject/{id}")
     public boolean delete(@PathVariable String id){
-        return subjectMockedData.deleteSubject(Integer.parseInt(id));
+        subjectRepository.delete(subjectRepository.findById(Integer.parseInt(id)).get());
+        return true;
     }
 }

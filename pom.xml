@@ -4,19 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- INFORMATION ABOUT MY PROJECT -->
+    <groupId>org.kondiolka</groupId>
+    <artifactId>JavaSpringBootRestApiTestProject</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>SchoolSystem</name>
+    <description>Testing project for spring boot</description>
+
     <!-- SPRING FRAMEWORK IMPORT -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.2.RELEASE</version>
     </parent>
-
-    <!-- INFORMATIONS ABOUT MY PROJECT -->
-    <groupId>org.kondiolka</groupId>
-    <artifactId>JavaSpringBootRestApiTestProject</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>SchoolSystem</name>
-    <description>Testing project for spring boot</description>
 
     <!-- PROPERTIES OF MY PROJECT -->
     <properties>
@@ -36,10 +36,22 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 
 
-    <!-- INFORMATIONS ABOUT BUILDING OF MY PROJECT -->
+    <!-- INFORMATION ABOUT BUILDING OF MY PROJECT -->
     <build>
         <plugins>
             <plugin>
